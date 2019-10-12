@@ -1,0 +1,49 @@
+#calculatorBody {
+    display: flex;
+    justify-content: space-evenly;
+    width: 160px;
+    height: 240px;
+    background-color: lightgray;
+    flex-wrap: wrap;
+}
+
+#calculatorHead {
+    display: flex;
+    justify-content: space-evenly;
+    width: 160px;
+    height: 40px;
+    background-color: lightgray;
+    flex-wrap: nowrap;
+}
+
+#calculatorFull {
+    width: 160px;
+    height: 280px;
+    margin: 0;
+    margin-left: 20px;
+    border: 2px solid black;
+}
+
+#input {
+    width: 120px;
+    font-size: 20px;
+}
+
+#clear {
+    width: 40px;
+    font-size: 20px;
+}
+
+h2 {
+    margin-left: 20px;
+}
+
+#deleteHistory {
+    margin-left: 20px;
+}
+
+.myInput {
+    width: 40px;
+    height: 60px;
+    font-size: 25px;
+}
