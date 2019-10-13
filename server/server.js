@@ -10,11 +10,6 @@ let result;
 let equations = [];
 let operator = '';
 
-app.post('/operator', (req, res) => {
-    operator = req.body.operator;
-    res.sendStatus(200);
-})
-
 app.post('/calculate', (req, res) => {
     mathEquation = req.body.equation;
     const regexOperators = /[-+/*]/;
