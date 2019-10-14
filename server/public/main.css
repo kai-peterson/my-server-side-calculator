@@ -42,7 +42,8 @@ h2 {
     margin-left: 20px;
 }
 
-.myInput {
+.myInput,
+.operator {
     width: 40px;
     height: 60px;
     font-size: 25px;

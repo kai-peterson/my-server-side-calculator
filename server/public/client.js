@@ -5,13 +5,20 @@ function readyNow() {
     $('#calculate').on('click', calculateResult);
     $('#clear').on('click', clearInputs)
     $('.myInput').on('click', concatValue);
+    $('.operator').on('click', concatOperator);
     $('#deleteHistory').on('click', deleteHistory)
-    $('#history').on('click', '.operation', reEquation)
+    $('#history').on('click', '.operation', redoEquation)
 }
 
 function concatValue() {
     let currentValue = $('#input').val()
     currentValue += $(this).val();
+    $('#input').val(currentValue);
+}
+
+function concatOperator() {
+    let currentValue = $('#input').val();
+    currentValue += ' ' + $(this).val() + ' ';
     $('#input').val(currentValue);
 }
 
@@ -35,13 +42,13 @@ function calculateResult() {
         return alert(`Your equation cannot start or end with an operator`)
     }
     // after removing the first operator, if there is still another operator, alert
-    else if (regexOperators.exec(equation.slice(0, regexOperators.exec(equation).index) + equation.slice(regexOperators.exec(equation).index + 1, equation.length)) != null) {
-        return alert(`You can only have one operator, sorry! Greater functionality coming soon!`)
-    // if there is anything other than numbers and math operators, alert
-    }
-    else if (regexNotNumberOperator.exec(equation) != null) {
-        return alert('Stick to numbers and math operators! No letters or any other special characters allowed >:(')
-    }
+    // else if (regexOperators.exec(equation.slice(0, regexOperators.exec(equation).index) + equation.slice(regexOperators.exec(equation).index + 1, equation.length)) != null) {
+    //     return alert(`You can only have one operator, sorry! Greater functionality coming soon!`)
+    // // if there is anything other than numbers and math operators, alert
+    // }
+    // else if (regexNotNumberOperator.exec(equation) != null) {
+    //     return alert('Stick to numbers and math operators! No letters or any other special characters allowed >:(')
+    // }
 
     let mathObject = {
         equation: equation
@@ -89,9 +96,46 @@ function deleteHistory() {
     }
 }
 
-function reEquation() {
+function redoEquation() {
     const regexUntilEquals = /[^=]*/;
     let untilEquals = regexUntilEquals.exec($(this).text())[0];
     $('#input').val(untilEquals);
     calculateResult();
+}
+
+
+// the following two equations are able to calculate with multiple operators
+// while following order of operations
+// i wrote them on client side first so i could test/debug easier
+function calculateEquation(equation) {
+    myEquation = equation.split(' ');
+
+    while (myEquation.findIndex(x => (x == '*' || x == '/')) != -1) {
+        let indexMinusOne = myEquation.findIndex(x => (x == '*' || x == '/')) - 1;
+        let tempOperation = myEquation.splice(indexMinusOne, 3);
+        myEquation.splice(indexMinusOne, 0, calculateSimpleEquation(tempOperation));
+    }
+    while (myEquation.findIndex(x => (x == '+' || x == '-')) != -1) {
+        let indexMinusOne = myEquation.findIndex(x => (x == '+' || x == '-')) - 1;
+        let tempOperation = myEquation.splice(indexMinusOne, 3);
+        myEquation.splice(indexMinusOne, 0, calculateSimpleEquation(tempOperation));
+    }
+    return myEquation[0];
+}
+
+function calculateSimpleEquation(equation) {
+    let operator = equation[1];
+
+    if (operator == '+') {
+        return Number(equation[0]) + Number(equation[2]);
+    }
+    else if (operator == '-') {
+        return Number(equation[0]) - Number(equation[2]);
+    }
+    else if (operator == '*') {
+        return Number(equation[0]) * Number(equation[2]);
+    }
+    else if (operator == '/') {
+        return Number(equation[0]) / Number(equation[2]);
+    }
 }

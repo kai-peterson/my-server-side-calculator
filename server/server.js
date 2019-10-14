@@ -5,35 +5,15 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('server/public'));
 
-let mathEquation;
 let result;
 let equations = [];
-let operator = '';
 
 app.post('/calculate', (req, res) => {
     mathEquation = req.body.equation;
-    const regexOperators = /[-+/*]/;
     console.log(mathEquation);
-    operator = regexOperators.exec(mathEquation)[0];
-    console.log(operator);
-    
-    
-    // this is where we need to parse through the string to pull out values and operator
-    // prob need regex
-    if (operator == '+') {
-        result = Number(mathEquation.split('+')[0]) + Number(mathEquation.split('+')[1]);
-    }
-    else if (operator == '-') {
-        result = Number(mathEquation.split('-')[0]) - Number(mathEquation.split('-')[1]);
-    }
-    else if (operator == '*') {
-        result = Number(mathEquation.split('*')[0]) * Number(mathEquation.split('*')[1]);
-    }
-    else if (operator == '/') {
-        result = Number(mathEquation.split('/')[0]) / Number(mathEquation.split('/')[1]);
-    }
 
-    equations.push(mathEquation + `=${result}`)
+    calculateEquation(mathEquation);
+    equations.push(mathEquation + ` = ${result}`)
     res.sendStatus(200);
 })
 
@@ -49,6 +29,39 @@ app.delete('/calculate', (req, res) => {
     result = 0;
     res.sendStatus(200);
 })
+
+function calculateEquation(equation) {
+    myEquation = equation.split(' ');
+
+    while (myEquation.findIndex(x => (x == '*' || x == '/')) != -1) {
+        let indexMinusOne = myEquation.findIndex(x => (x == '*' || x == '/')) - 1;
+        let tempOperation = myEquation.splice(indexMinusOne, 3);
+        myEquation.splice(indexMinusOne, 0, calculateSimpleEquation(tempOperation));
+    }
+    while (myEquation.findIndex(x => (x == '+' || x == '-')) != -1) {
+        let indexMinusOne = myEquation.findIndex(x => (x == '+' || x == '-')) - 1;
+        let tempOperation = myEquation.splice(indexMinusOne, 3);
+        myEquation.splice(indexMinusOne, 0, calculateSimpleEquation(tempOperation));
+    }
+    result = myEquation[0];
+}
+
+function calculateSimpleEquation(equation) {
+    let operator = equation[1];
+
+    if (operator == '+') {
+        return Number(equation[0]) + Number(equation[2]);
+    }
+    else if (operator == '-') {
+        return Number(equation[0]) - Number(equation[2]);
+    }
+    else if (operator == '*') {
+        return Number(equation[0]) * Number(equation[2]);
+    }
+    else if (operator == '/') {
+        return Number(equation[0]) / Number(equation[2]);
+    }
+}
 
 const PORT = 5000;
 app.listen(PORT, () => {
