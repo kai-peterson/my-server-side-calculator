@@ -35,7 +35,7 @@ function calculateResult() {
     const regexOperators = /[-+/*]/;
     const regexEndingOperator = /[+/*-]$/;
     const regexStartingOperator = /^[+/*-]/;
-    const regexNotNumberOperator = /[^0-9-/+*]/;
+    const regexNotNumberOperator = /[^0-9-/+*\s]/;
 
     // if user forgot an operator, alert
     if (regexOperators.exec(equation) == null) {
@@ -45,14 +45,10 @@ function calculateResult() {
     else if (regexStartingOperator.exec(equation) != null || regexEndingOperator.exec(equation) != null) {
         return alert(`Your equation cannot start or end with an operator`)
     }
-    // after removing the first operator, if there is still another operator, alert
-    // else if (regexOperators.exec(equation.slice(0, regexOperators.exec(equation).index) + equation.slice(regexOperators.exec(equation).index + 1, equation.length)) != null) {
-    //     return alert(`You can only have one operator, sorry! Greater functionality coming soon!`)
-    // // if there is anything other than numbers and math operators, alert
-    // }
-    // else if (regexNotNumberOperator.exec(equation) != null) {
-    //     return alert('Stick to numbers and math operators! No letters or any other special characters allowed >:(')
-    // }
+    // if there is anything other than numbers and math operators, alert
+    else if (regexNotNumberOperator.exec(equation) != null) {
+        return alert('Stick to numbers and math operators! No letters or any other special characters allowed >:(')
+    }
 
     let mathObject = {
         equation: equation
