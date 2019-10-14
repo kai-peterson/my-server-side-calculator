@@ -30,6 +30,9 @@ app.delete('/calculate', (req, res) => {
     res.sendStatus(200);
 })
 
+// the following two equations are able to calculate with multiple operators
+// while following order of operations
+// i wrote them on client side first so i could test/debug easier, then copied them over here
 function calculateEquation(equation) {
     myEquation = equation.split(' ');
 
