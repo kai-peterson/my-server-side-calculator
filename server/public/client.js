@@ -16,6 +16,10 @@ function concatValue() {
     $('#input').val(currentValue);
 }
 
+// i need the spaces before/after every operator because of how i calculate on server-side
+// when you click the operator buttons it auto-adds spaces, but if a user were to type in the input
+// they could easily break it by not putting spaces. prob solved by making the field not an input
+// but i don't have time to do this rn so gonna leave it as is
 function concatOperator() {
     let currentValue = $('#input').val();
     currentValue += ' ' + $(this).val() + ' ';
