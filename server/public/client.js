@@ -35,7 +35,7 @@ function calculateResult() {
     const regexOperators = /[-+/*]/;
     const regexEndingOperator = /[+/*-]$/;
     const regexStartingOperator = /^[+/*-]/;
-    const regexNotNumberOperator = /[^0-9-/+*\s]/;
+    const regexNotNumberOperator = /[^0-9-/+*\s.]/;
 
     // if user forgot an operator, alert
     if (regexOperators.exec(equation) == null) {
